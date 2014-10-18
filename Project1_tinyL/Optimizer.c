@@ -20,7 +20,7 @@ int main()
 	
 	head = ReadInstructionList(stdin);
 
-    /* ---  FIRST: ALGEBRAIC SIMPLIFICATION PASS --- */
+  /* ---  FIRST: ALGEBRAIC SIMPLIFICATION PASS --- */
 
 	if (!head) {
 		ERROR("No instructions\n");
@@ -28,7 +28,7 @@ int main()
 	}
 
 
-    /* --- SECOND: CONSTANT FOLDING PASS --- */
+  /* --- SECOND: CONSTANT FOLDING PASS --- */
 
 	if (!head) { //no instructions!
 		ERROR("No instructions\n");
@@ -42,11 +42,10 @@ int main()
 		instr3 = head->next->next; 
 	
 		while(instr3){
-			printf("instruction!");
 			if(instr1->opcode == LOADI && instr2->opcode == LOADI){
 				switch(instr3->opcode){ 
 					case ADD: 
-						printf(" optimize ADD");
+						; //labels can only be followed by statements and declarations aren't statements
 						//get the sum
 						int sum = instr1->field2 + instr2->field2;
 						//create a new node
@@ -71,7 +70,7 @@ int main()
 						else instr3 = NULL; 
 						break;
 					case SUB: 
-						printf(" optimize SUB");
+						; //labels can only be followed by statements and declarations aren't statements
 						//get the difference
 						int diff = instr1->field2 - instr2->field2;
 						//create a new node
@@ -96,7 +95,7 @@ int main()
 						else instr3 = NULL; 
 						break;
 					case MUL: 
-						printf(" optimize MUL");
+						; //labels can only be followed by statements and declarations aren't statements
 						//get the product
 						int product = instr1->field2 * instr2->field2;
 						//create a new node
@@ -121,34 +120,16 @@ int main()
 						else instr3 = NULL; 
 						break; 
 					default: 
-						printf("Nope");
 						break;
 				} 
 			} 
 			else{ 
-				printf("continuing \n");
 				instr1 = instr1->next; 
 				instr2 = instr2->next; 
 				instr3 = instr3->next;
 			}
-			printf("\n");
 		}
-
 	} 
-
-	/** //works like a charm
-	//initialize
-	instr1 = head;	
-	instr2 = head->next;
-	instr3 = head->next->next;
-
-	while(instr3){ 
-		instr1 = instr1->next; 
-		instr2 = instr2->next; 
-		instr3 = instr3->next; 
-		printf("moved forward\n");
-	}
-	// */
 
 	PrintInstructionList(stdout, head);
 	DestroyInstructionList(head);
