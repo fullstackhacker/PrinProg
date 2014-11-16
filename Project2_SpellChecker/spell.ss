@@ -29,6 +29,18 @@
 ;; HELPER FUNCTIONS
 
 ;; *** CODE FOR ANY HELPER FUNCTION GOES HERE ***
+(define keyr 
+  (lambda (w counter)
+    (cond 
+      ((< counter (- (length w) 1))
+       (+ (* (expt 7 counter) (ctv (list-ref w counter))) (keyr w (+ 1 counter)))
+      )
+      (else 
+       (* (expt 7 counter) (ctv(list-ref w counter)))
+      )
+    )
+  )
+)
 
 
 ;; -----------------------------------------------------
@@ -36,7 +48,10 @@
 
 (define key
   (lambda (w)
-     'SOME_CODE_GOES_HERE ;; *** FUNCTION BODY IS MISSING ***
+    ;; loop through w
+    ;; for counter in len(w)
+    ;; 7 ^ counter * ctv(w[counter])
+    (keyr w 0)
 ))
 
 ;; -----------------------------------------------------
@@ -54,7 +69,7 @@
 ;; value of parameter "size" should be a prime number
 (define gen-hash-division-method
   (lambda (size) ;; range of values: 0..size-1
-     'SOME_CODE_GOES_HERE ;; *** FUNCTION BODY IS MISSING ***
+    size
 ))
 
 ;; value of parameter "size" is not critical
