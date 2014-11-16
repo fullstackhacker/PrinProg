@@ -42,7 +42,6 @@
   )
 )
 
-
 ;; -----------------------------------------------------
 ;; KEY FUNCTION
 
@@ -69,8 +68,16 @@
 ;; value of parameter "size" should be a prime number
 (define gen-hash-division-method
   (lambda (size) ;; range of values: 0..size-1
-    size
-))
+    (define mod 
+      (lambda (key)
+        (cond
+          ((< key size) key)
+          ((> key size) (- key size))
+        )
+      )
+    )
+  )
+)
 
 ;; value of parameter "size" is not critical
 ;; Note: hash functions may return integer values in "real"
