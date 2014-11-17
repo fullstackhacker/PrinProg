@@ -67,16 +67,12 @@
 
 ;; value of parameter "size" should be a prime number
 (define gen-hash-division-method
-  (lambda (size) ;; range of values: 0..size-1
-    (define mod 
-      (lambda (key)
-        (cond
-          ((< key size) key)
-          ((> key size) (- key size))
-        )
-      )
-    )
-  )
+ 	(lambda (size) ;; range of values: 0..size-1
+		(lambda (w)
+			(define k (key w))
+			(modulo k size)	
+		)
+	)
 )
 
 ;; value of parameter "size" is not critical
@@ -85,14 +81,23 @@
 
 (define gen-hash-multiplication-method
   (lambda (size) ;; range of values: 0..size-1
-     'SOME_CODE_GOES_HERE ;; *** FUNCTION BODY IS MISSING ***
-))
+		(lambda (w)
+			(define k (key w))
+			;;(floor (* size (- (* k A)(floor(* k A)))))	
+			(define guts (- (* k A)(floor (* k A))))
+			(floor (reduce * (list size guts) 1))
+		)
+	)
+)
 
 ;; value of parameter "size" should be a prime number
 (define gen-hash-hybrid-method
   (lambda (size) ;; range of values: 0..size-1
-     'SOME_CODE_GOES_HERE ;; *** FUNCTION BODY IS MISSING ***
-))
+		(lambda (w)
+			(modulo (+ (* 2 ((gen-hash-division-method size) w)) (* 3 ((gen-hash-multiplication-method size) w))) size)	
+		)
+	)
+)
 
 
 ;; -----------------------------------------------------
@@ -124,7 +129,6 @@
 ;; (hash-5 language) ;; ==> 283497.0
 ;; (hash-6 language) ;; ==> 387564.0
 
-
 ;; (hash-1 of) ;; ==> 57
 ;; (hash-2 of) ;; ==> 57
 ;; (hash-3 of) ;; ==> 20514.0
@@ -146,8 +150,12 @@
 
 (define gen-checker
   (lambda (hashfunctionlist dict)
-     'SOME_CODE_GOES_HERE ;; *** FUNCTION BODY IS MISSING ***
-))
+		(lambda (w)
+			(define hashed ((car hashfunctionlist) w))	
+			hashed
+		)
+	)
+)
 
 
 ;; -----------------------------------------------------
