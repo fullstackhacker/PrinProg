@@ -42,6 +42,30 @@
   )
 )
 
+(define hashit
+	(lambda (hashFunction dict hashedlist)
+		(cond
+			((null? dict) hashedlist)
+			(append (hashFunction (car dict) hashedlsit))
+			(hashit hashFunction (cdr dict) hashedlist)
+		)
+	)
+)
+
+(define hashList
+	(lambda (hashFunctionList dict hashedlist)
+		(cond 
+			((null? hashFunctionList) 
+				hashedlist
+			)
+			(else
+				((car hashFunctionList) dict hashedlist)	
+			)
+		)
+	)
+)
+
+
 ;; -----------------------------------------------------
 ;; KEY FUNCTION
 
@@ -151,8 +175,7 @@
 (define gen-checker
   (lambda (hashfunctionlist dict)
 		(lambda (w)
-			(define hashed ((car hashfunctionlist) w))	
-			hashed
+				
 		)
 	)
 )
