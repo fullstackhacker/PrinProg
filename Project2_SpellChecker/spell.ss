@@ -45,9 +45,13 @@
 (define hashit
 	(lambda (hashFunction dict hashedlist)
 		(cond
-			((null? dict) hashedlist)
-			(append (hashFunction (car dict) hashedlsit))
-			(hashit hashFunction (cdr dict) hashedlist)
+			((null? dict) 
+				hashedlist	
+			)
+			(else 
+				(define newlist (cons (hashFunction (car dict)) hashedlist))
+				(hashit hashFunction (cdr dict) newlist)
+			)
 		)
 	)
 )
@@ -59,16 +63,67 @@
 				hashedlist
 			)
 			(else
-				((car hashFunctionList) dict hashedlist)	
+				(define newList (hashit (car hashFunctionList) dict hashedlist))
+				(hashList (cdr hashFunctionList) dict newList)
 			)
 		)
 	)
 )
 
+(define checkit
+	(lambda (word dictList checkList)
+		(cond
+			((null? dictList) 
+				(define newList (cons #f checkList))	
+				newList	
+			)
+			(else
+				(cond
+					((= word (car dictList))
+						(define newList (cons #t checkList))
+						newList
+					)
+					(else 
+						(checkit word (cdr dictList) checkList)
+					)
+				)
+			)
+		)
+	)
+)
+
+(define checkDictHash
+	(lambda (wordList dictList checkList)
+		(cond
+			((null? wordList) checkList)
+			(else 
+				(define newList (checkit (car wordList) dictList checkList))
+				(checkDictHash (cdr wordList) dictList newList)
+			)
+		)
+	)
+)
+
+(define verfier
+	(lambda (check checkList)
+		(cond
+			((null? checkList) check)
+			(else
+				(cond
+					((and check (car checkList)) 
+						(verfier #t (cdr checkList))
+					)
+					(else
+						#f
+					)
+				)
+			)
+		)
+	)
+)
 
 ;; -----------------------------------------------------
 ;; KEY FUNCTION
-
 (define key
   (lambda (w)
     ;; loop through w
@@ -174,12 +229,14 @@
 
 (define gen-checker
   (lambda (hashfunctionlist dict)
+		(define dictList (hashList hashfunctionlist dict (list)))	
 		(lambda (w)
-				
+			(define wordHashes (hashList hashfunctionlist (list w) (list)))
+			(define checkedhashes (checkDictHash wordHashes dictList (list)))
+			(verfier (car checkedhashes) checkedhashes)
 		)
 	)
 )
-
 
 ;; -----------------------------------------------------
 ;; EXAMPLE SPELL CHECKERS
